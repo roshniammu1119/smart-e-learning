@@ -17,11 +17,14 @@ import com.example.elearning.ui.onboarding.OnboardingViewModel
 import com.example.elearning.ui.splash.SplashScreen
 import com.example.elearning.ui.splash.SplashViewModel
 import com.example.elearning.ui.theme.ELearningTheme
+import com.example.elearning.ui.welcome.WelcomeScreen
+import com.example.elearning.ui.welcome.WelcomeViewModel
 
 class MainActivity : ComponentActivity() {
 
     private val splashViewModel: SplashViewModel by viewModels()
     private val onboardingViewModel: OnboardingViewModel by viewModels()
+    private val welcomeViewModel: WelcomeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +33,7 @@ class MainActivity : ComponentActivity() {
             ELearningTheme {
                 val splashUiState by splashViewModel.uiState.collectAsState()
                 val onboardingUiState by onboardingViewModel.uiState.collectAsState()
+                val welcomeUiState by welcomeViewModel.uiState.collectAsState()
 
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     when {
@@ -49,6 +53,20 @@ class MainActivity : ComponentActivity() {
                                 },
                                 onSkipClicked = {
                                     onboardingViewModel.onSkipClicked()
+                                },
+                                modifier = Modifier.padding(innerPadding)
+                            )
+                        }
+                        !welcomeUiState.isFinished -> {
+                            WelcomeScreen(
+                                onCreateAccountClicked = {
+                                    welcomeViewModel.onCreateAccountClicked()
+                                },
+                                onSignInClicked = {
+                                    welcomeViewModel.onSignInClicked()
+                                },
+                                onContinueAsGuestClicked = {
+                                    welcomeViewModel.onContinueAsGuestClicked()
                                 },
                                 modifier = Modifier.padding(innerPadding)
                             )
