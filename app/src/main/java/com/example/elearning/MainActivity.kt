@@ -11,11 +11,15 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import com.example.elearning.ui.forgotpassword.ForgotPasswordScreen
+import com.example.elearning.ui.forgotpassword.ForgotPasswordViewModel
 import com.example.elearning.ui.main.MainScreen
 import com.example.elearning.ui.onboarding.OnboardingScreen
 import com.example.elearning.ui.onboarding.OnboardingViewModel
 import com.example.elearning.ui.signin.SignInScreen
 import com.example.elearning.ui.signin.SignInViewModel
+import com.example.elearning.ui.signup.SignUpScreen
+import com.example.elearning.ui.signup.SignUpViewModel
 import com.example.elearning.ui.splash.SplashScreen
 import com.example.elearning.ui.splash.SplashViewModel
 import com.example.elearning.ui.theme.ELearningTheme
@@ -29,6 +33,8 @@ class MainActivity : ComponentActivity() {
     private val onboardingViewModel: OnboardingViewModel by viewModels()
     private val welcomeViewModel: WelcomeViewModel by viewModels()
     private val signInViewModel: SignInViewModel by viewModels()
+    private val signUpViewModel: SignUpViewModel by viewModels()
+    private val forgotPasswordViewModel: ForgotPasswordViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +45,8 @@ class MainActivity : ComponentActivity() {
                 val onboardingUiState by onboardingViewModel.uiState.collectAsState()
                 val welcomeUiState by welcomeViewModel.uiState.collectAsState()
                 val signInUiState by signInViewModel.uiState.collectAsState()
+                val signUpUiState by signUpViewModel.uiState.collectAsState()
+                val forgotPasswordUiState by forgotPasswordViewModel.uiState.collectAsState()
 
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     when {
@@ -76,6 +84,41 @@ class MainActivity : ComponentActivity() {
                                 modifier = Modifier.padding(innerPadding)
                             )
                         }
+                        welcomeUiState.selectedAction == WelcomeAction.CREATE_ACCOUNT || signUpUiState.isSuccess -> {
+                            SignUpScreen(
+                                uiState = signUpUiState,
+                                onFullNameChanged = { signUpViewModel.onFullNameChanged(it) },
+                                onEmailChanged = { signUpViewModel.onEmailChanged(it) },
+                                onPasswordChanged = { signUpViewModel.onPasswordChanged(it) },
+                                onTogglePasswordVisibility = { signUpViewModel.onTogglePasswordVisibility() },
+                                onTermsChanged = { signUpViewModel.onTermsChanged(it) },
+                                onCreateAccountClicked = { signUpViewModel.onCreateAccountClicked() },
+                                onGoogleSignUpClicked = { signUpViewModel.onGoogleSignUpClicked() },
+                                onSignInClicked = {
+                                    signUpViewModel.onSignInClicked()
+                                },
+                                onBackClicked = {
+                                    // Back
+                                },
+                                modifier = Modifier.padding(innerPadding)
+                            )
+                        }
+                        welcomeUiState.selectedAction == WelcomeAction.SIGN_IN && signInUiState.navigateToForgotPassword -> {
+                            ForgotPasswordScreen(
+                                uiState = forgotPasswordUiState,
+                                onEmailChanged = { forgotPasswordViewModel.onEmailChanged(it) },
+                                onSendResetLinkClicked = { forgotPasswordViewModel.onSendResetLinkClicked() },
+                                onBackToSignInClicked = {
+                                    signInViewModel.resetNavigation()
+                                    forgotPasswordViewModel.reset()
+                                },
+                                onBackClicked = {
+                                    signInViewModel.resetNavigation()
+                                    forgotPasswordViewModel.reset()
+                                },
+                                modifier = Modifier.padding(innerPadding)
+                            )
+                        }
                         welcomeUiState.selectedAction == WelcomeAction.SIGN_IN && !signInUiState.isSuccess -> {
                             SignInScreen(
                                 uiState = signInUiState,
@@ -85,9 +128,11 @@ class MainActivity : ComponentActivity() {
                                 onSignInClicked = { signInViewModel.onSignInClicked() },
                                 onGoogleSignInClicked = { signInViewModel.onGoogleSignInClicked() },
                                 onForgotPasswordClicked = { signInViewModel.onForgotPasswordClicked() },
-                                onCreateAccountClicked = { signInViewModel.onCreateAccountClicked() },
+                                onCreateAccountClicked = {
+                                    signInViewModel.onCreateAccountClicked()
+                                },
                                 onBackClicked = {
-                                    // Handle back
+                                    // Back
                                 },
                                 modifier = Modifier.padding(innerPadding)
                             )
