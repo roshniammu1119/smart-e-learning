@@ -13,6 +13,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.example.elearning.ui.forgotpassword.ForgotPasswordScreen
 import com.example.elearning.ui.forgotpassword.ForgotPasswordViewModel
+import com.example.elearning.ui.goals.GoalsScreen
+import com.example.elearning.ui.goals.GoalsViewModel
+import com.example.elearning.ui.interests.InterestsScreen
+import com.example.elearning.ui.interests.InterestsViewModel
 import com.example.elearning.ui.main.MainScreen
 import com.example.elearning.ui.onboarding.OnboardingScreen
 import com.example.elearning.ui.onboarding.OnboardingViewModel
@@ -35,6 +39,8 @@ class MainActivity : ComponentActivity() {
     private val signInViewModel: SignInViewModel by viewModels()
     private val signUpViewModel: SignUpViewModel by viewModels()
     private val forgotPasswordViewModel: ForgotPasswordViewModel by viewModels()
+    private val interestsViewModel: InterestsViewModel by viewModels()
+    private val goalsViewModel: GoalsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +53,8 @@ class MainActivity : ComponentActivity() {
                 val signInUiState by signInViewModel.uiState.collectAsState()
                 val signUpUiState by signUpViewModel.uiState.collectAsState()
                 val forgotPasswordUiState by forgotPasswordViewModel.uiState.collectAsState()
+                val interestsUiState by interestsViewModel.uiState.collectAsState()
+                val goalsUiState by goalsViewModel.uiState.collectAsState()
 
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     when {
@@ -85,23 +93,35 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         welcomeUiState.selectedAction == WelcomeAction.CREATE_ACCOUNT || signUpUiState.isSuccess -> {
-                            SignUpScreen(
-                                uiState = signUpUiState,
-                                onFullNameChanged = { signUpViewModel.onFullNameChanged(it) },
-                                onEmailChanged = { signUpViewModel.onEmailChanged(it) },
-                                onPasswordChanged = { signUpViewModel.onPasswordChanged(it) },
-                                onTogglePasswordVisibility = { signUpViewModel.onTogglePasswordVisibility() },
-                                onTermsChanged = { signUpViewModel.onTermsChanged(it) },
-                                onCreateAccountClicked = { signUpViewModel.onCreateAccountClicked() },
-                                onGoogleSignUpClicked = { signUpViewModel.onGoogleSignUpClicked() },
-                                onSignInClicked = {
-                                    signUpViewModel.onSignInClicked()
-                                },
-                                onBackClicked = {
-                                    // Back
-                                },
-                                modifier = Modifier.padding(innerPadding)
-                            )
+                            when {
+                                goalsUiState.isFinished -> {
+                                    MainScreen(modifier = Modifier.padding(innerPadding))
+                                }
+                                interestsUiState.isFinished -> {
+                                    GoalsScreen(
+                                        uiState = goalsUiState,
+                                        onCareerGoalChanged = { goalsViewModel.onCareerGoalChanged(it) },
+                                        onExperienceLevelSelected = { goalsViewModel.onExperienceLevelSelected(it) },
+                                        onWeeklyHoursSelected = { goalsViewModel.onWeeklyHoursSelected(it) },
+                                        onBuildPlanClicked = { goalsViewModel.onBuildPlanClicked() },
+                                        onBackClicked = {
+                                            interestsViewModel.reset()
+                                        },
+                                        modifier = Modifier.padding(innerPadding)
+                                    )
+                                }
+                                else -> {
+                                    InterestsScreen(
+                                        uiState = interestsUiState,
+                                        onInterestClicked = { interestsViewModel.toggleInterest(it) },
+                                        onContinueClicked = { interestsViewModel.onContinueClicked() },
+                                        onBackClicked = {
+                                            signUpViewModel.resetNavigation()
+                                        },
+                                        modifier = Modifier.padding(innerPadding)
+                                    )
+                                }
+                            }
                         }
                         welcomeUiState.selectedAction == WelcomeAction.SIGN_IN && signInUiState.navigateToForgotPassword -> {
                             ForgotPasswordScreen(
