@@ -4,7 +4,8 @@ data class OnboardingPageData(
     val tag: String,
     val title: String,
     val subtitle: String,
-    val chips: List<String>
+    val chips: List<String> = emptyList(),
+    val highlightNote: String? = null
 )
 
 data class OnboardingUiState(
@@ -17,10 +18,10 @@ data class OnboardingUiState(
             chips = listOf("Adaptive lessons", "Your own pace")
         ),
         OnboardingPageData(
-            tag = "SMART AI",
-            title = "Learn smarter,\nnot harder with AI.",
-            subtitle = "Get instant explanations, custom quizzes, and real-time feedback tailored to your understanding.",
-            chips = listOf("Instant feedback", "Smart quizzes")
+            tag = "LESS SEARCHING. MORE DISCOVERING.",
+            title = "Your next great skill,\nalready found.",
+            subtitle = "Discover courses matched to your interests, goals and progress. The more you learn, the smarter your picks.",
+            highlightNote = "Great matches. Real reasons. Always evolving."
         ),
         OnboardingPageData(
             tag = "PROGRESS",

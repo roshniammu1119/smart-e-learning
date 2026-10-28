@@ -103,7 +103,7 @@ fun OnboardingScreen(
                 )
             }
 
-            // Center Illustration Card
+            // Center Illustration Card (Dynamic per page)
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -116,72 +116,145 @@ fun OnboardingScreen(
                     ),
                 contentAlignment = Alignment.Center
             ) {
-                Canvas(modifier = Modifier.fillMaxSize().padding(20.dp)) {
-                    val w = size.width
-                    val h = size.height
+                when (uiState.currentPage) {
+                    0 -> {
+                        // Page 0: Open Book & 3D Shapes
+                        Canvas(modifier = Modifier.fillMaxSize().padding(20.dp)) {
+                            val w = size.width
+                            val h = size.height
 
-                    val starCenter = Offset(w * 0.60f, h * 0.25f)
-                    val starPath = Path().apply {
-                        moveTo(starCenter.x, starCenter.y - 16f)
-                        quadraticTo(starCenter.x, starCenter.y, starCenter.x + 16f, starCenter.y)
-                        quadraticTo(starCenter.x, starCenter.y, starCenter.x, starCenter.y + 16f)
-                        quadraticTo(starCenter.x, starCenter.y, starCenter.x - 16f, starCenter.y)
-                        quadraticTo(starCenter.x, starCenter.y, starCenter.x, starCenter.y - 16f)
-                        close()
+                            val starCenter = Offset(w * 0.60f, h * 0.25f)
+                            val starPath = Path().apply {
+                                moveTo(starCenter.x, starCenter.y - 16f)
+                                quadraticTo(starCenter.x, starCenter.y, starCenter.x + 16f, starCenter.y)
+                                quadraticTo(starCenter.x, starCenter.y, starCenter.x, starCenter.y + 16f)
+                                quadraticTo(starCenter.x, starCenter.y, starCenter.x - 16f, starCenter.y)
+                                quadraticTo(starCenter.x, starCenter.y, starCenter.x, starCenter.y - 16f)
+                                close()
+                            }
+                            drawPath(starPath, Color(0xFFFFEB3B), style = Fill)
+
+                            val leftPagePath = Path().apply {
+                                moveTo(w * 0.25f, h * 0.55f)
+                                cubicTo(w * 0.2f, h * 0.52f, w * 0.12f, h * 0.58f, w * 0.15f, h * 0.68f)
+                                lineTo(w * 0.45f, h * 0.78f)
+                                lineTo(w * 0.45f, h * 0.60f)
+                                cubicTo(w * 0.38f, h * 0.57f, w * 0.30f, h * 0.56f, w * 0.25f, h * 0.55f)
+                                close()
+                            }
+                            drawPath(leftPagePath, Color(0xFFFFFFFF), style = Fill)
+
+                            val rightPagePath = Path().apply {
+                                moveTo(w * 0.55f, h * 0.60f)
+                                lineTo(w * 0.55f, h * 0.78f)
+                                lineTo(w * 0.85f, h * 0.68f)
+                                cubicTo(w * 0.88f, h * 0.58f, w * 0.80f, h * 0.52f, w * 0.75f, h * 0.55f)
+                                cubicTo(w * 0.70f, h * 0.56f, w * 0.62f, h * 0.57f, w * 0.55f, h * 0.60f)
+                                close()
+                            }
+                            drawPath(rightPagePath, Color(0xFFF3F4F6), style = Fill)
+
+                            val spinePath = Path().apply {
+                                moveTo(w * 0.45f, h * 0.78f)
+                                lineTo(w * 0.55f, h * 0.78f)
+                                lineTo(w * 0.52f, h * 0.83f)
+                                lineTo(w * 0.48f, h * 0.83f)
+                                close()
+                            }
+                            drawPath(spinePath, Color(0xFF1D4ED8), style = Fill)
+
+                            val cubeTop = Path().apply {
+                                moveTo(w * 0.62f, h * 0.44f)
+                                lineTo(w * 0.68f, h * 0.40f)
+                                lineTo(w * 0.74f, h * 0.44f)
+                                lineTo(w * 0.68f, h * 0.48f)
+                                close()
+                            }
+                            drawPath(cubeTop, Color(0xFFC4B5FD), style = Fill)
+
+                            drawCircle(
+                                color = Color(0xFF3B82F6),
+                                radius = 14f,
+                                center = Offset(w * 0.68f, h * 0.54f)
+                            )
+
+                            val pyramidPath = Path().apply {
+                                moveTo(w * 0.70f, h * 0.60f)
+                                lineTo(w * 0.77f, h * 0.70f)
+                                lineTo(w * 0.65f, h * 0.68f)
+                                close()
+                            }
+                            drawPath(pyramidPath, Color(0xFF8B5CF6), style = Fill)
+                        }
                     }
-                    drawPath(starPath, Color(0xFFFFEB3B), style = Fill)
+                    1 -> {
+                        // Page 1: Smart Recommendations (Floating glass cards & AI spark)
+                        Canvas(modifier = Modifier.fillMaxSize().padding(20.dp)) {
+                            val w = size.width
+                            val h = size.height
 
-                    val leftPagePath = Path().apply {
-                        moveTo(w * 0.25f, h * 0.55f)
-                        cubicTo(w * 0.2f, h * 0.52f, w * 0.12f, h * 0.58f, w * 0.15f, h * 0.68f)
-                        lineTo(w * 0.45f, h * 0.78f)
-                        lineTo(w * 0.45f, h * 0.60f)
-                        cubicTo(w * 0.38f, h * 0.57f, w * 0.30f, h * 0.56f, w * 0.25f, h * 0.55f)
-                        close()
+                            val starCenter = Offset(w * 0.58f, h * 0.28f)
+                            val starPath = Path().apply {
+                                moveTo(starCenter.x, starCenter.y - 18f)
+                                quadraticTo(starCenter.x, starCenter.y, starCenter.x + 18f, starCenter.y)
+                                quadraticTo(starCenter.x, starCenter.y, starCenter.x, starCenter.y + 18f)
+                                quadraticTo(starCenter.x, starCenter.y, starCenter.x - 18f, starCenter.y)
+                                quadraticTo(starCenter.x, starCenter.y, starCenter.x, starCenter.y - 18f)
+                                close()
+                            }
+                            drawPath(starPath, Color(0xFF38BDF8), style = Fill)
+
+                            drawRoundRect(
+                                color = Color(0xB0FFFFFF),
+                                topLeft = Offset(w * 0.15f, h * 0.35f),
+                                size = androidx.compose.ui.geometry.Size(w * 0.35f, h * 0.45f),
+                                cornerRadius = androidx.compose.ui.geometry.CornerRadius(16f, 16f)
+                            )
+
+                            drawRoundRect(
+                                color = Color(0xDFFFFFFF),
+                                topLeft = Offset(w * 0.32f, h * 0.28f),
+                                size = androidx.compose.ui.geometry.Size(w * 0.38f, h * 0.50f),
+                                cornerRadius = androidx.compose.ui.geometry.CornerRadius(18f, 18f)
+                            )
+                            drawCircle(
+                                color = Color(0xFF6366F1),
+                                radius = 18f,
+                                center = Offset(w * 0.51f, h * 0.53f)
+                            )
+
+                            drawRoundRect(
+                                color = Color(0xB0FFFFFF),
+                                topLeft = Offset(w * 0.52f, h * 0.35f),
+                                size = androidx.compose.ui.geometry.Size(w * 0.35f, h * 0.45f),
+                                cornerRadius = androidx.compose.ui.geometry.CornerRadius(16f, 16f)
+                            )
+                        }
                     }
-                    drawPath(leftPagePath, Color(0xFFFFFFFF), style = Fill)
+                    else -> {
+                        // Page 2: Progress / Streaks
+                        Canvas(modifier = Modifier.fillMaxSize().padding(20.dp)) {
+                            val w = size.width
+                            val h = size.height
 
-                    val rightPagePath = Path().apply {
-                        moveTo(w * 0.55f, h * 0.60f)
-                        lineTo(w * 0.55f, h * 0.78f)
-                        lineTo(w * 0.85f, h * 0.68f)
-                        cubicTo(w * 0.88f, h * 0.58f, w * 0.80f, h * 0.52f, w * 0.75f, h * 0.55f)
-                        cubicTo(w * 0.70f, h * 0.56f, w * 0.62f, h * 0.57f, w * 0.55f, h * 0.60f)
-                        close()
+                            val barWidth = 36f
+                            val startX = w * 0.22f
+                            val spacing = 45f
+
+                            val heights = listOf(0.4f, 0.65f, 0.5f, 0.85f, 0.75f)
+                            heights.forEachIndexed { index, ratio ->
+                                val x = startX + (index * spacing)
+                                val barH = h * ratio * 0.5f
+                                val y = h * 0.75f - barH
+                                drawRoundRect(
+                                    color = if (index == 3) Color(0xFF2563EB) else Color(0xFFC4B5FD),
+                                    topLeft = Offset(x, y),
+                                    size = androidx.compose.ui.geometry.Size(barWidth, barH),
+                                    cornerRadius = androidx.compose.ui.geometry.CornerRadius(8f, 8f)
+                                )
+                            }
+                        }
                     }
-                    drawPath(rightPagePath, Color(0xFFF3F4F6), style = Fill)
-
-                    val spinePath = Path().apply {
-                        moveTo(w * 0.45f, h * 0.78f)
-                        lineTo(w * 0.55f, h * 0.78f)
-                        lineTo(w * 0.52f, h * 0.83f)
-                        lineTo(w * 0.48f, h * 0.83f)
-                        close()
-                    }
-                    drawPath(spinePath, Color(0xFF1D4ED8), style = Fill)
-
-                    val cubeTop = Path().apply {
-                        moveTo(w * 0.62f, h * 0.44f)
-                        lineTo(w * 0.68f, h * 0.40f)
-                        lineTo(w * 0.74f, h * 0.44f)
-                        lineTo(w * 0.68f, h * 0.48f)
-                        close()
-                    }
-                    drawPath(cubeTop, Color(0xFFC4B5FD), style = Fill)
-
-                    drawCircle(
-                        color = Color(0xFF3B82F6),
-                        radius = 14f,
-                        center = Offset(w * 0.68f, h * 0.54f)
-                    )
-
-                    val pyramidPath = Path().apply {
-                        moveTo(w * 0.70f, h * 0.60f)
-                        lineTo(w * 0.77f, h * 0.70f)
-                        lineTo(w * 0.65f, h * 0.68f)
-                        close()
-                    }
-                    drawPath(pyramidPath, Color(0xFF8B5CF6), style = Fill)
                 }
             }
 
@@ -194,7 +267,7 @@ fun OnboardingScreen(
                     text = pageData.tag,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color(0xFF2563EB),
+                    color = Color(0xFF7C3AED),
                     letterSpacing = 1.2.sp
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -214,24 +287,50 @@ fun OnboardingScreen(
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Chips Row
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
-                ) {
-                    pageData.chips.forEach { chipText ->
-                        Box(
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(20.dp))
-                                .border(1.dp, Color(0xFFE2E8F0), RoundedCornerShape(20.dp))
-                                .padding(horizontal = 14.dp, vertical = 6.dp)
-                        ) {
-                            Text(
-                                text = chipText,
-                                fontSize = 12.sp,
-                                color = Color(0xFF475569),
-                                fontWeight = FontWeight.Medium
-                            )
+                // Chips or Highlight Note
+                if (pageData.chips.isNotEmpty()) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        pageData.chips.forEach { chipText ->
+                            Box(
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(20.dp))
+                                    .border(1.dp, Color(0xFFE2E8F0), RoundedCornerShape(20.dp))
+                                    .padding(horizontal = 14.dp, vertical = 6.dp)
+                            ) {
+                                Text(
+                                    text = chipText,
+                                    fontSize = 12.sp,
+                                    color = Color(0xFF475569),
+                                    fontWeight = FontWeight.Medium
+                                )
+                            }
                         }
+                    }
+                } else if (!pageData.highlightNote.isNullOrEmpty()) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
+                        Canvas(modifier = Modifier.size(14.dp)) {
+                            val center = Offset(size.width / 2f, size.height / 2f)
+                            val starPath = Path().apply {
+                                moveTo(center.x, center.y - 7f)
+                                quadraticTo(center.x, center.y, center.x + 7f, center.y)
+                                quadraticTo(center.x, center.y, center.x, center.y + 7f)
+                                quadraticTo(center.x, center.y, center.x - 7f, center.y)
+                                quadraticTo(center.x, center.y, center.x, center.y - 7f)
+                                close()
+                            }
+                            drawPath(starPath, Color(0xFF8B5CF6), style = Fill)
+                        }
+                        Text(
+                            text = pageData.highlightNote,
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = Color(0xFF8B5CF6)
+                        )
                     }
                 }
             }
@@ -310,7 +409,7 @@ fun OnboardingScreen(
 fun OnboardingScreenPreview() {
     ELearningTheme {
         OnboardingScreen(
-            uiState = OnboardingUiState(currentPage = 0),
+            uiState = OnboardingUiState(currentPage = 1),
             onNextClicked = {},
             onSkipClicked = {}
         )
