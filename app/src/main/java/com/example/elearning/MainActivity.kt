@@ -20,6 +20,8 @@ import com.example.elearning.ui.interests.InterestsViewModel
 import com.example.elearning.ui.main.MainScreen
 import com.example.elearning.ui.onboarding.OnboardingScreen
 import com.example.elearning.ui.onboarding.OnboardingViewModel
+import com.example.elearning.ui.planready.PlanReadyScreen
+import com.example.elearning.ui.planready.PlanReadyViewModel
 import com.example.elearning.ui.signin.SignInScreen
 import com.example.elearning.ui.signin.SignInViewModel
 import com.example.elearning.ui.signup.SignUpScreen
@@ -41,6 +43,7 @@ class MainActivity : ComponentActivity() {
     private val forgotPasswordViewModel: ForgotPasswordViewModel by viewModels()
     private val interestsViewModel: InterestsViewModel by viewModels()
     private val goalsViewModel: GoalsViewModel by viewModels()
+    private val planReadyViewModel: PlanReadyViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +58,7 @@ class MainActivity : ComponentActivity() {
                 val forgotPasswordUiState by forgotPasswordViewModel.uiState.collectAsState()
                 val interestsUiState by interestsViewModel.uiState.collectAsState()
                 val goalsUiState by goalsViewModel.uiState.collectAsState()
+                val planReadyUiState by planReadyViewModel.uiState.collectAsState()
 
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     when {
@@ -94,8 +98,15 @@ class MainActivity : ComponentActivity() {
                         }
                         welcomeUiState.selectedAction == WelcomeAction.CREATE_ACCOUNT || signUpUiState.isSuccess -> {
                             when {
-                                goalsUiState.isFinished -> {
+                                planReadyUiState.isFinished -> {
                                     MainScreen(modifier = Modifier.padding(innerPadding))
+                                }
+                                goalsUiState.isFinished -> {
+                                    PlanReadyScreen(
+                                        uiState = planReadyUiState,
+                                        onStartLearningClicked = { planReadyViewModel.onStartLearningClicked() },
+                                        modifier = Modifier.padding(innerPadding)
+                                    )
                                 }
                                 interestsUiState.isFinished -> {
                                     GoalsScreen(
