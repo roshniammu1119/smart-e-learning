@@ -18,6 +18,8 @@ import com.example.elearning.ui.home.HomeScreen
 import com.example.elearning.ui.home.HomeViewModel
 import com.example.elearning.ui.mylearning.MyLearningScreen
 import com.example.elearning.ui.mylearning.MyLearningViewModel
+import com.example.elearning.ui.profile.ProfileScreen
+import com.example.elearning.ui.profile.ProfileViewModel
 
 @Composable
 fun MainScreen(
@@ -27,11 +29,13 @@ fun MainScreen(
     val exploreViewModel = remember { ExploreViewModel() }
     val myLearningViewModel = remember { MyLearningViewModel() }
     val analyticsViewModel = remember { AnalyticsViewModel() }
+    val profileViewModel = remember { ProfileViewModel() }
 
     val homeUiState by homeViewModel.uiState.collectAsState()
     val exploreUiState by exploreViewModel.uiState.collectAsState()
     val myLearningUiState by myLearningViewModel.uiState.collectAsState()
     val analyticsUiState by analyticsViewModel.uiState.collectAsState()
+    val profileUiState by profileViewModel.uiState.collectAsState()
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -65,6 +69,12 @@ fun MainScreen(
                     uiState = analyticsUiState,
                     onFilterSelected = { analyticsViewModel.onFilterSelected(it) },
                     onSkillPerformanceClicked = { analyticsViewModel.onSkillPerformanceClicked() }
+                )
+                4 -> ProfileScreen(
+                    uiState = profileUiState,
+                    onToggleReminders = { profileViewModel.onToggleReminders(it) },
+                    onMenuItemClicked = { profileViewModel.onMenuItemClicked(it) },
+                    onSignOutClicked = { profileViewModel.onSignOutClicked() }
                 )
                 else -> HomeScreen(
                     uiState = homeUiState,
