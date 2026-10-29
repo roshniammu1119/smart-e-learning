@@ -9,6 +9,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import com.example.elearning.ui.analytics.AnalyticsScreen
+import com.example.elearning.ui.analytics.AnalyticsViewModel
 import com.example.elearning.ui.explore.ExploreScreen
 import com.example.elearning.ui.explore.ExploreViewModel
 import com.example.elearning.ui.home.BottomNavigationBar
@@ -24,10 +26,12 @@ fun MainScreen(
     val homeViewModel = remember { HomeViewModel() }
     val exploreViewModel = remember { ExploreViewModel() }
     val myLearningViewModel = remember { MyLearningViewModel() }
+    val analyticsViewModel = remember { AnalyticsViewModel() }
 
     val homeUiState by homeViewModel.uiState.collectAsState()
     val exploreUiState by exploreViewModel.uiState.collectAsState()
     val myLearningUiState by myLearningViewModel.uiState.collectAsState()
+    val analyticsUiState by analyticsViewModel.uiState.collectAsState()
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -56,6 +60,11 @@ fun MainScreen(
                     uiState = myLearningUiState,
                     onFilterSelected = { myLearningViewModel.onFilterSelected(it) },
                     onCourseClicked = { myLearningViewModel.onCourseClicked(it) }
+                )
+                3 -> AnalyticsScreen(
+                    uiState = analyticsUiState,
+                    onFilterSelected = { analyticsViewModel.onFilterSelected(it) },
+                    onSkillPerformanceClicked = { analyticsViewModel.onSkillPerformanceClicked() }
                 )
                 else -> HomeScreen(
                     uiState = homeUiState,
