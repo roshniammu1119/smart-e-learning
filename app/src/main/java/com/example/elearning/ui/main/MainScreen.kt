@@ -14,6 +14,8 @@ import com.example.elearning.ui.explore.ExploreViewModel
 import com.example.elearning.ui.home.BottomNavigationBar
 import com.example.elearning.ui.home.HomeScreen
 import com.example.elearning.ui.home.HomeViewModel
+import com.example.elearning.ui.learningpath.LearningPathScreen
+import com.example.elearning.ui.learningpath.LearningPathViewModel
 
 @Composable
 fun MainScreen(
@@ -21,9 +23,11 @@ fun MainScreen(
 ) {
     val homeViewModel = remember { HomeViewModel() }
     val exploreViewModel = remember { ExploreViewModel() }
+    val learningPathViewModel = remember { LearningPathViewModel() }
 
     val homeUiState by homeViewModel.uiState.collectAsState()
     val exploreUiState by exploreViewModel.uiState.collectAsState()
+    val learningPathUiState by learningPathViewModel.uiState.collectAsState()
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -47,6 +51,11 @@ fun MainScreen(
                     onSearchQueryChanged = { exploreViewModel.onSearchQueryChanged(it) },
                     onCategorySelected = { exploreViewModel.onCategorySelected(it) },
                     onCourseBookmarkToggled = { exploreViewModel.onCourseBookmarkToggled(it) }
+                )
+                2 -> LearningPathScreen(
+                    uiState = learningPathUiState,
+                    onContinuePathClicked = { learningPathViewModel.onContinuePathClicked() },
+                    onRoadmapItemClicked = { learningPathViewModel.onRoadmapItemClicked(it) }
                 )
                 else -> HomeScreen(
                     uiState = homeUiState,
